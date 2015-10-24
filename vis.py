@@ -6,7 +6,6 @@ from collections import defaultdict
 import math
 
 twitter_network = [ line.strip().split('\t') for line in file('twitter_network.csv') ]
-
 o = net.DiGraph()
 hfollowers = defaultdict(lambda: 0)
 for (twitter_user, followed_by, followers) in twitter_network:
@@ -71,7 +70,10 @@ for k in nodeset:
     x, y = pos[k]
     plt.text(x, y+0.02, s=k, alpha=alpha, horizontalalignment='center', fontsize=9)
 
-
+#prune nodes with 0 outgoing connections ('balloon' removal)
+outdeg = g.out_degree()
+to_remove = [n for n in outdeg if outdeg[n] == 0]
+g.remove_nodes_from(to_remove)
 
 #create json, re-draw with d3.js
 for n in g:
