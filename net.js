@@ -1,5 +1,5 @@
-var w = 1000,
-    h = 1000,
+var w = 550,
+    h = 500,
     fill = d3.scale.category20();
 
 var vis = d3.select("#chart")
@@ -9,7 +9,7 @@ var vis = d3.select("#chart")
 
 d3.json("data.json", function(json) {
   var force = d3.layout.force()
-      .charge(-120)
+      .charge(-500)
       .linkDistance(50)
       .nodes(json.nodes)
       .links(json.links)
@@ -32,13 +32,27 @@ d3.json("data.json", function(json) {
       .attr("class", "node")
       .attr("cx", function(d) { return d.x; })
       .attr("cy", function(d) { return d.y; })
-      .attr("r", 5)
+      .attr("r", 3)
       .style("fill", function(d) { return fill(d.group); })
       .call(force.drag)
-      .on('dblclick', connectedNodes); //Added code ;
+      .on('dblclick', connectedNodes); 
+
+
+
+
+  /*
+  node.append("svg:title")
+    .attr("dx", ".10em")
+    .attr("dy", ".10em")
+    .text(function(d) { return d.name; })
+    .style("stroke", "gray");;
+  */
 
   node.append("svg:title")
-      .text(function(d) { return d.name; });
+    .attr("x", 12)
+    .attr("dy", ".35em")
+    .text(function(d) { return d.name; });
+        
 
   vis.style("opacity", 1e-6)
     .transition()
@@ -53,6 +67,7 @@ d3.json("data.json", function(json) {
 
     node.attr("cx", function(d) { return d.x; })
         .attr("cy", function(d) { return d.y; });
+
   });
 
 
@@ -65,7 +80,7 @@ d3.json("data.json", function(json) {
   for (i = 0; i < node[0].length; i++) {
       linkedByIndex[i + "," + i] = 1;
   };
-  console.log(node[0].length)
+  console.log(node[0])
   console.log(linkedByIndex)
   console.log(link[0])
   console.log(link[0][i].__data__.source.index)  //accessing source index. other keyword is 'target'
@@ -95,7 +110,6 @@ d3.json("data.json", function(json) {
           link.style("opacity", function (o) {
               return d.index==o.source.index | d.index==o.target.index ? 1 : 0.1;
           });
-          //Reduce the op
           toggle = 1;
       } else {
           //Put them back to opacity=1
@@ -112,6 +126,55 @@ d3.json("data.json", function(json) {
 
 
 
+
+/*
+
+var node = svg.selectAll(".node")
+    .data(graph.nodes)
+    .enter().append("g")
+    .attr("class", "node")
+    .call(force.drag);
+node.append("circle")
+    .attr("r", 8)
+    .style("fill", function (d) {
+    return color(d.group);
+})
+node.append("text")
+      .attr("dx", 10)
+      .attr("dy", ".35em")
+      .text(function(d) { return d.name })
+      .style("stroke", "gray");
+
+
+
+//Now we are giving the SVGs co-ordinates - the force layout is generating the co-ordinates which this code is using to update the attributes of the SVG elements
+force.on("tick", function () {
+    link.attr("x1", function (d) {
+        return d.source.x;
+    })
+        .attr("y1", function (d) {
+        return d.source.y;
+    })
+        .attr("x2", function (d) {
+        return d.target.x;
+    })
+        .attr("y2", function (d) {
+        return d.target.y;
+    });
+    d3.selectAll("circle").attr("cx", function (d) {
+        return d.x;
+    })
+        .attr("cy", function (d) {
+        return d.y;
+    });
+    d3.selectAll("text").attr("x", function (d) {
+        return d.x;
+    })
+        .attr("y", function (d) {
+        return d.y;
+    });
+});
+*/
 
 
 

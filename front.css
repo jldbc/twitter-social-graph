@@ -7,3 +7,8 @@ line.link {
   stroke: #999;
   stroke-opacity: .6;
 }
+
+text {
+  font: 10px sans-serif;
+  pointer-events: none;
+}

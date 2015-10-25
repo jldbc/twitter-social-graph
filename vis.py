@@ -83,4 +83,7 @@ d = json_graph.node_link_data(g)
 json.dump(d, open('data.json','w'))
 print('Wrote node-link JSON data to data.json')
 
+
+#  python -m SimpleHTTPServer
+
         
