@@ -9,8 +9,8 @@ var vis = d3.select("#chart")
 
 d3.json("data.json", function(json) {
   var force = d3.layout.force()
-      .charge(-500)
-      .linkDistance(50)
+      .charge(-700)
+      .linkDistance(60)
       .nodes(json.nodes)
       .links(json.links)
       .size([w, h])
@@ -63,12 +63,16 @@ d3.json("data.json", function(json) {
     link.attr("x1", function(d) { return d.source.x; })
         .attr("y1", function(d) { return d.source.y; })
         .attr("x2", function(d) { return d.target.x; })
-        .attr("y2", function(d) { return d.target.y; });
+        .attr("y2", function(d) { return d.target.y; 
+        node[0].x = w/2;
+        node[0].y = h/2;});
 
     node.attr("cx", function(d) { return d.x; })
         .attr("cy", function(d) { return d.y; });
 
   });
+
+  console.log(node[0][56])
 
 
 
@@ -120,61 +124,6 @@ d3.json("data.json", function(json) {
   }
 
 });
-
-
-
-
-
-
-
-/*
-
-var node = svg.selectAll(".node")
-    .data(graph.nodes)
-    .enter().append("g")
-    .attr("class", "node")
-    .call(force.drag);
-node.append("circle")
-    .attr("r", 8)
-    .style("fill", function (d) {
-    return color(d.group);
-})
-node.append("text")
-      .attr("dx", 10)
-      .attr("dy", ".35em")
-      .text(function(d) { return d.name })
-      .style("stroke", "gray");
-
-
-
-//Now we are giving the SVGs co-ordinates - the force layout is generating the co-ordinates which this code is using to update the attributes of the SVG elements
-force.on("tick", function () {
-    link.attr("x1", function (d) {
-        return d.source.x;
-    })
-        .attr("y1", function (d) {
-        return d.source.y;
-    })
-        .attr("x2", function (d) {
-        return d.target.x;
-    })
-        .attr("y2", function (d) {
-        return d.target.y;
-    });
-    d3.selectAll("circle").attr("cx", function (d) {
-        return d.x;
-    })
-        .attr("cy", function (d) {
-        return d.y;
-    });
-    d3.selectAll("text").attr("x", function (d) {
-        return d.x;
-    })
-        .attr("y", function (d) {
-        return d.y;
-    });
-});
-*/
 
 
 
