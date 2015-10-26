@@ -26,34 +26,33 @@ d3.json("data.json", function(json) {
       .attr("x2", function(d) { return d.target.x; })
       .attr("y2", function(d) { return d.target.y; });
 
-  var node = vis.selectAll("circle.node")
+  var node = vis.selectAll("g.node")
       .data(json.nodes)
-    .enter().append("svg:circle")
+    .enter().append("svg:g")
       .attr("class", "node")
-      .attr("cx", function(d) { return d.x; })
-      .attr("cy", function(d) { return d.y; })
-      .attr("r", 3.5)
-      .style("fill", function(d) { return fill(d.group); })
-      .style("fill", function (d) { return '#d62728'; })
-      .call(force.drag)
-      .on('dblclick', connectedNodes); 
+      .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
 
+  node.append("svg:circle")
+    .attr("r", 3.5)
+    //.style("fill", "#234B6F") 
+    .style("fill", function (d) { return '#d62728'; })
+    .call(force.drag)
+    .on('dblclick', connectedNodes);
+      
+  node.append("svg:text")
+    .data(json.nodes)
+    .style("pointer-events", "none")
+    .text(function(d) { return d.id;})
+    .attr("fill", "#555") 
+    .attr("font-size", "11px") 
+    .attr("dx", "8") 
+    .attr("dy", ".35em");
 
+  node.append("svg:title") 
+      .style("pointer-events", "none") 
+      .text(function(d) { return d.id;})
 
-
-  /*
-  node.append("svg:title")
-    .attr("dx", ".10em")
-    .attr("dy", ".10em")
-    .text(function(d) { return d.name; })
-    .style("stroke", "gray");;
-  */
-
-  node.append("svg:title")
-    .attr("x", 12)
-    .attr("dy", ".35em")
-    .text(function(d) { return d.name; });
-        
+console.log(node[0][33].id)
 
   vis.style("opacity", 1e-6)
     .transition()
@@ -65,11 +64,15 @@ d3.json("data.json", function(json) {
         .attr("y1", function(d) { return d.source.y; })
         .attr("x2", function(d) { return d.target.x; })
         .attr("y2", function(d) { return d.target.y; 
-        node[0].x = w/2;
+        node[0].x = w/2;  
         node[0].y = h/2;});
 
     node.attr("cx", function(d) { return d.x; })
-        .attr("cy", function(d) { return d.y; });
+        .attr("cy", function(d) { return d.y; })
+        .attr('id', function(d) {return d.id})
+        node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; }); ;
+
+    //label.attr("cx", function)
 
   });
 
@@ -85,26 +88,24 @@ d3.json("data.json", function(json) {
   for (i = 0; i < node[0].length; i++) {
       linkedByIndex[i + "," + i] = 1;
   };
-  console.log(node[0])
-  console.log(linkedByIndex)
+
   console.log(link[0])
   console.log(link[0][i].__data__.source.index)  //accessing source index. other keyword is 'target'
 
-
-  console.log(link)
-  console.log(link[0].length)
   var i = 1
   //for (d in link[0])
   for (i = 0; i < link[0].length; i++) {
 
       linkedByIndex[link[0][i].__data__.source.index + "," + link[0][i].__data__.target.index] = 1;
   };
-  console.log(linkedByIndex)
-  //This function looks up whether a pair are neighbours
+
+
   function neighboring(a, b) {
       return linkedByIndex[a.index + "," + b.index];
   }
+
   console.log(linkedByIndex)
+
   function connectedNodes() {
       if (toggle == 0) {
           //Reduce the opacity of all but the neighbouring nodes
@@ -116,8 +117,9 @@ d3.json("data.json", function(json) {
               return d.index==o.source.index | d.index==o.target.index ? 1 : 0.1;
           });
           toggle = 1;
-      } else {
-          //Put them back to opacity=1
+      }
+
+      else {
           node.style("opacity", 1);
           link.style("opacity", 1);
           toggle = 0;
@@ -125,7 +127,4 @@ d3.json("data.json", function(json) {
   }
 
 });
-
-
-
 
