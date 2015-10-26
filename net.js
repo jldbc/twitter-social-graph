@@ -1,5 +1,5 @@
-var w = 850,
-    h = 600,
+var w = 1050,
+    h = 1050,
     fill = d3.scale.category20();
 
 var vis = d3.select("#chart")
@@ -32,8 +32,9 @@ d3.json("data.json", function(json) {
       .attr("class", "node")
       .attr("cx", function(d) { return d.x; })
       .attr("cy", function(d) { return d.y; })
-      .attr("r", 3)
+      .attr("r", 3.5)
       .style("fill", function(d) { return fill(d.group); })
+      .style("fill", function (d) { return '#d62728'; })
       .call(force.drag)
       .on('dblclick', connectedNodes); 
 
