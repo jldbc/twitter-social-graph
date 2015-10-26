@@ -4,6 +4,10 @@ import json
 import sys
 from collections import defaultdict
 
+
+#CREATES TWITTER_NETWORK.CSV
+
+
 users = defaultdict(lambda: { 'followers': 0 })
 
 for f in glob.glob('twitter-users/*.json'):
@@ -30,6 +34,10 @@ def process_follower_list(screen_name, edges=[], depth=0, max_depth=2):
     return edges
 
 edges = process_follower_list(SEED, max_depth=3)
+
+# fix seed in the middle in the json file, graph runs off of page otherwise 
+# json for anchor: {"name": "jmzledoux", "id": "jmzledoux", "x": "700", "y": "200", "fixed": "True"}
+
 
 with open('twitter_network.csv', 'w') as outf:
     edge_exists = {}
