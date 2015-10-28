@@ -12,6 +12,7 @@ users = defaultdict(lambda: { 'followers': 0 })
 
 for f in glob.glob('twitter-users/*.json'):
     data = json.load(file(f))
+    #data = json.load(file('1000591.json'))
     screen_name = data['screen_name']
     users[screen_name] = { 'followers': data['followers_count'] }
 
